@@ -9,6 +9,7 @@ use App\Jurnal;
 use App\Mapel;
 use App\Kelas;
 use App\Siswa;
+use App\User;
 use Auth;
 use Arr;
 use App\Guru;
@@ -22,16 +23,42 @@ class JurnalController extends Controller
     private $jamke;
     public function __construct(){
         $dt = Carbon::now();
+        $jam = $dt->isoFormat('HHmm');
         $hari = $dt->isoFormat('dddd');
-
-        if ($hari == "Saturday" | $hari == "Sunday") {
-            $this->jamke = 'home';
-        }
-        elseif ($hari == "Friday") {
-            $jam = $dt->isoFormat('HHmm');
-            if ($jam > '0700' & $jam <= '0745') {
-                $this->jamke = 1;
+        $setting = DB::select('select type_jam from users where role = ?', [2]);
+        $setting = $setting[0]->type_jam;
+        if($setting == "PJJ"){
+            if ($hari == "Saturday" | $hari == "Sunday") {
+                $this->jamke = 'home';
             }
+            else{
+                if ($jam > '0800' & $jam <= '0900') {
+                    $this->jamke = 1;
+                }
+                elseif ($jam > '0900' & $jam <= '1000') {
+                    $this->jamke = 2;
+                }
+                if($hari == "Monday") {
+                    if ($jam > '1000' & $jam <= '1100') {
+                        $this->jamke = 3;
+                    }
+                }
+                elseif($hari == "Tuesday" | $hari == "Wednesday" | $hari == "Thursday"){
+                    if ($jam > '1100' & $jam <= '1200') {
+                        $this->jamke = 4;
+                    }
+                }
+
+            }
+        }
+        elseif($setting == "Reguler"){
+            if ($hari == "Saturday" | $hari == "Sunday") {
+                $this->jamke = 'home';
+            }
+            elseif ($hari == "Friday") {
+                if ($jam > '0700' & $jam <= '0745') {
+                    $this->jamke = 1;
+                }
             elseif ($jam > '0745' & $jam <= '0830') {
                 $this->jamke = 2;
             }
@@ -51,7 +78,7 @@ class JurnalController extends Controller
                 $this->jamke = 6;
             }
             elseif ($jam > '1145' & $jam <= '1215') {
-                    $this->jamke = "break";
+                $this->jamke = "break";
             }
             elseif ($jam > '1215' & $jam <= '1300') {
                 $this->jamke = 7;
@@ -97,7 +124,7 @@ class JurnalController extends Controller
                 $this->jamke = 6;
             }
             elseif ($jam > '1145' & $jam <= '1215') {
-                    $this->jamke = "break";
+                $this->jamke = "break";
             }
             elseif ($jam > '1215' & $jam <= '1300') {
                 $this->jamke = 7;
@@ -121,6 +148,8 @@ class JurnalController extends Controller
                 $this->jamke = "home";
             }
         }
+        }
+        dd($this->jamke);
     }
 
     public function index(Request $req,Jurnal $jurnal)
@@ -521,6 +550,7 @@ class JurnalController extends Controller
         $kls = Kelas::find($kelas);
         $cls = Kelas::all();
         $jam = $this->jamke;
+        $month = $dt->format('Y-m');
 
         if ($req->has('date') ) {
             $jurnal = Jurnal::with('mapel')
@@ -543,7 +573,7 @@ class JurnalController extends Controller
                 ->simplePaginate(10);
             $dx =$dt->toDateString();
         }
-        return view('Jurnal.index[admin]', compact('jurnal','mpl','gr','jam','siswa','dx','cls','id'));
+        return view('Jurnal.index[admin]', compact('jurnal','mpl','gr','jam','siswa','dx','cls','id','month'));
     }
     public function acc(Jurnal $id)
     {

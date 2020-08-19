@@ -225,8 +225,20 @@ Data Siswa | Journal
                             <option value="{{$kelas->id}}">{{$kelas->kelas}}</option>
                             @endforeach
                         </select>
-                        <br>
                         @endif
+                        <br>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown button
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        <br>
                         <button type="submit" class="btn btn-success btn-block">Submit</button>
                     </form>
                 </div>
