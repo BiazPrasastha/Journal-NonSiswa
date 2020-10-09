@@ -60,6 +60,24 @@ Data Siswa | Journal
                             </a>
                         </div>
                     </form>
+
+                    @if (Auth::user()->role == 2)
+                    <form action="/profile/set-jam" method="POST">
+                        @csrf
+                        <div class="input-group mb-3 col-lg-12">
+                            <select class="form-control m-inputx" name="type_jam" required>
+                                <option value="Reguler" class="centerx">Reguler</option>
+                                <option value="PJJ" class="centerx">PJJ</option>
+                            </select>
+                            <div class="input-group-addon">
+                                <button type="submit" class="btn btn-success btn-submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    @endif
+
                 </div>
             </div>
         </div>

@@ -66,5 +66,8 @@ Route::group(['middleware' => ['isLogin']], function () {
     {
         Route::get('/','ProfileController@index');
         Route::post('/change-password','ProfileController@change');
+        Route::group(['middleware' => 'isAdmin'], function () {
+            Route::post('/set-jam', 'ProfileController@setjam');
+        });
     });
 });

@@ -38,17 +38,22 @@ class JurnalController extends Controller
                 elseif ($jam > '0900' & $jam <= '1000') {
                     $this->jamke = 2;
                 }
-                if($hari == "Monday") {
-                    if ($jam > '1000' & $jam <= '1100') {
-                        $this->jamke = 3;
+                elseif($jam >'1000' & $jam <= '1100'){
+                    if($hari == "Friday"){
+                        $this->jamke = 'home';
+                    }
+                    else{
+                        $this->jamke =3;
                     }
                 }
-                elseif($hari == "Tuesday" | $hari == "Wednesday" | $hari == "Thursday"){
-                    if ($jam > '1100' & $jam <= '1200') {
-                        $this->jamke = 4;
+                elseif($jam >'1100' & $jam <= '1200'){
+                    if ($hari == "Monday" | $hari == "Friday") {
+                        $this->jamke = 'home';
+                    }
+                    else{
+                        $this->jamke =4;
                     }
                 }
-
             }
         }
         elseif($setting == "Reguler"){
@@ -149,7 +154,6 @@ class JurnalController extends Controller
             }
         }
         }
-        dd($this->jamke);
     }
 
     public function index(Request $req,Jurnal $jurnal)

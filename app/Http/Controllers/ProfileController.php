@@ -8,6 +8,7 @@ use App\Kelas;
 use App\User;
 use App\Guru;
 use App\Rules\MatchOldPassword;
+use DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -47,5 +48,13 @@ class ProfileController extends Controller
 
         alert()->success('','Password Berhasil Diubah')->background('#3B4252')->autoClose(1700);
         return redirect('/profile');
+    }
+
+    public function setjam(Request $req)
+    {
+        $jam = $req->type_jam;
+        DB::update('update users set type_jam = ? where role = ?', [$jam,'2']);
+        alert()->success('','Setting Jam Berhasil Diubah')->background('#3B4252')->autoClose(1700);
+        return redirect()->back();
     }
 }
