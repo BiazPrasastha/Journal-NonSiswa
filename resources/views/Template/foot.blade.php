@@ -5,7 +5,7 @@
 <script src="{{asset('assets/js/long-press-event.min.js')}}"></script>
 <!-- Bootstrap JS -->
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-<script src="{{asset('assets/js/pooper.min.js')}}"></script>
+{{-- <script src="{{asset('assets/js/pooper.min.js')}}"></script> --}}
 
 <!-- Fontawesome JS -->
 <script src="{{asset('assets/font/js/all.min.js')}}"></script>

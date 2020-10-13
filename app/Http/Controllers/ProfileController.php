@@ -20,7 +20,8 @@ class ProfileController extends Controller
 
         if (Auth::user()->role==2) {
             $role = "Admin";
-            $kelas = "Kelas Atas";
+            $jam = Auth::user()->type_jam;
+            $kelas = "Kelas Atas - ".$jam;
         } elseif(Auth::user()->role==1) {
             $role = "Ketua Kelas";
             $y = Auth::user()->kelas_id;

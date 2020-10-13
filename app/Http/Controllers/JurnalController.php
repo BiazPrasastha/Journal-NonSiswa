@@ -54,6 +54,10 @@ class JurnalController extends Controller
                         $this->jamke =4;
                     }
                 }
+                else {
+                    $this->jamke = 'home';
+                }
+
             }
         }
         elseif($setting == "Reguler"){
@@ -291,13 +295,20 @@ class JurnalController extends Controller
         $kelas = Auth::user()->kelas_id;
         $kls = Kelas::find($kelas);
         $guru = Auth::user()->guru_id;
-
         $jurnal = new Jurnal();
         if (Auth::user()->role == 1) {
             $jurnal->kelas_id = $kls->id;
         }
         elseif (Auth::user()->role == 3) {
-            $jurnal->kelas_id = $req->kelas;
+            $x = $req->kelas.' '.$req->jurusan.$req->urut;
+            $all = Kelas::where('kelas', '=', $x)->get();
+            if ($all->count() == 0) {
+                alert()->error('','Kelas '.$x .' Tidak Valid')->background('#3B4252')->autoClose(2000);
+                return redirect()->back();
+            }
+            else {
+                $jurnal->kelas_id = $all[0]->id;
+            }
         }
         else{
             return redirect()->back();
