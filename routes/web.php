@@ -14,6 +14,15 @@
 Route::get('/', 'LoginController@index');
 Route::get('/login', 'LoginController@login');
 Route::post('/login-post', 'LoginController@loginp');
+
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('config:clear');
+    $exitCode = Artisan::call('cache:clear');
+    $exitCode = Artisan::call('config:cache');
+    return 'DONE';
+});
+
+
 Route::group(['middleware' => ['isAdmin']], function () {
     Route::post('/signup', 'LoginController@signup');
 });

@@ -231,6 +231,7 @@ Data Siswa
                                         </div>
                                         <div class="form-group col-sm-12">
                                             <select class="form-control m-input" name="kelas" required>
+                                                <option value="">Kelas</option>
                                                 <option value="10">10</option>
                                                 <option value="11">11</option>
                                                 <option value="12">12</option>
@@ -239,6 +240,7 @@ Data Siswa
                                         </div>
                                         <div class="form-group col-sm-12">
                                             <select class="form-control m-input" name="jurusan" required>
+                                                <option value="">Jurusan</option>
                                                 <option value="RPL">RPL</option>
                                                 <option value="TKJ">TKJ</option>
                                                 <option value="MM">MM</option>
@@ -252,6 +254,7 @@ Data Siswa
                                         </div>
                                         <div class="form-group col-sm-12">
                                             <select class="form-control m-input" name="urut" required>
+                                                <option value="">Indeks</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
