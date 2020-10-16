@@ -80,3 +80,14 @@ Route::group(['middleware' => ['isLogin']], function () {
         });
     });
 });
+
+
+Route::get('coba-1', function()
+{
+    return view('Jurnal.add-page-1');
+});
+
+Route::get('coba-2', function()
+{
+    return view('Jurnal.add-page-2');
+});

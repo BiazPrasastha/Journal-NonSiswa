@@ -21,6 +21,10 @@ Data Siswa
                 <button type="button" class="btn danger" data-toggle="modal">
                     <i class="fas fa-minus"></i>
                 </button>
+                @elseif($tombol == "disable")
+                <button type="button" class="btn danger" data-toggle="modal">
+                    <i class="fas fa-minus"></i>
+                </button>
                 @else
                 <button type="button" class="btn tambah" data-toggle="modal" data-target="#modalscrollable">
                     <i class="fas fa-plus"></i>
@@ -148,12 +152,10 @@ Data Siswa
                     <div class="modal fade" id="navCtrl1" tabindex="-1" role="modal" aria-labelledby="myModal"
                         width="100%">
                         <div class="modal-dialog modal-sm modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group text-center" style="display: flex">
-                                        <button class="btn btn-detail mr-2" type="button" style="flex: 1;">
+                            <div class="modal-content" style="width:320px">
+                                <div class="modal-body" style="width:320px">
+                                    <div class="action" style="display:flex">
+                                        <button class="btn btn-detail mr-1" type="button" style="flex: 1;">
                                             <a href="/jurnal/{{$jurnals->id}}/info">
                                                 <span class="material-icons">info</span>
                                                 <div class="link-action">
@@ -163,12 +165,32 @@ Data Siswa
                                                 </div>
                                             </a>
                                         </button>
-                                        <button class="btn btn-acc delete-confirm" type="button" style="flex: 1;">
+                                        <button class="btn btn-delete mr-1" type="button" style="flex: 1;">
+                                            <a href="/jurnal/{{$jurnals->id}}/delete">
+                                                <span class="material-icons">delete</span>
+                                                <div class="link-action">
+                                                    <h6>
+                                                        Delete
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                        </button>
+                                        <button class="btn btn-acc mr-1" type="button" style="flex: 1;">
                                             <a href="/jurnal/{{$jurnals->id}}/add-absen">
                                                 <span class="material-icons">person</span>
                                                 <div class="link-action">
                                                     <h6>
                                                         Absen
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                        </button>
+                                        <button class="btn btn-edit mr-1" type="button" style="flex: 1;">
+                                            <a href="/jurnal/{{$jurnals->id}}/edit">
+                                                <span class="material-icons">edit</span>
+                                                <div class="link-action">
+                                                    <h6>
+                                                        Edit
                                                     </h6>
                                                 </div>
                                             </a>
