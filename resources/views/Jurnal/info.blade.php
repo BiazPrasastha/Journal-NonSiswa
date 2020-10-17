@@ -50,7 +50,6 @@ Data Guru | Journal
                     @else
                     <li class="text-light" style="text-transform: capitalize">
                         {{$id->keterangan}}
-
                     </li>
                     @endif
                 </div>

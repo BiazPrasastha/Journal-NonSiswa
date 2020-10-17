@@ -178,16 +178,26 @@ Data Siswa
                             </div>
                         </div>
                     </div>
-                    <a class="item-swipe swipe-one itemMobile" href="/jurnal/{{$jurnals->id}}/info">
+                    <a class="item-swipe swipe itemMobile" href="/jurnal/{{$jurnals->id}}/info">
                         <div class="jamke">
                             {{str_pad($jurnals->jam, 2, "0", STR_PAD_LEFT)}} - {{$jurnals->kelas->kelas}}
                         </div>
                         <div class="mapel">{{$jurnals->mapel->mapel}}</div>
                     </a>
                     <div class="item-back">
-                        <button class="action first btn-acc" type="button">
+                        <button class="action first btn-delete" type="button">
+                            <a href="/jurnal/{{$jurnals->id}}/delete">
+                                <span class="material-icons">delete</span>
+                            </a>
+                        </button>
+                        <button class="action second btn-acc" type="button">
                             <a href="/jurnal/{{$jurnals->id}}/add-absen">
                                 <span class="material-icons">person</span>
+                            </a>
+                        </button>
+                        <button class="action third btn-edit" type="button">
+                            <a href="/jurnal/{{$jurnals->id}}/edit">
+                                <span class="material-icons">edit</span>
                             </a>
                         </button>
                     </div>

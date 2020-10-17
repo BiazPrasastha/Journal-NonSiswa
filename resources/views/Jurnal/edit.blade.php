@@ -78,6 +78,45 @@ Data Guru | Journal
                                         value="{{$id->keterangan == null ? "-" : $id->keterangan}}"
                                         placeholder="Keterangan" autocomplete="off">
                                 </div>
+
+                                @foreach ($absen as $absens)
+                                <div class="form-group col-sm-12 fieldGroup">
+                                    <div id="formRow">
+                                        <div class="input-group mb-3">
+                                            <select class="form-control m-input" name="absen[]" required>
+                                                @php
+                                                $x = DB::table('siswa')->where('id','=',$absens->siswa_id)->get();
+                                                @endphp
+                                                @foreach ($siswa as $siswas)
+                                                <option value="{{$siswas->id}}" @if ($siswas->id == $absens->siswa_id)
+                                                    selected
+                                                    @endif>{{$siswas->nama}}</option>
+                                                @endforeach
+                                            </select>
+                                            <select class="form-control m-inputx" name="abs[]" required>
+                                                <option value="Sakit" class="centerx" @if ($absens->keterangan ==
+                                                    "Sakit")
+                                                    selected
+                                                    @endif>S</option>
+                                                <option value="Ijin" class="centerx" @if ($absens->keterangan == "Ijin")
+                                                    selected
+                                                    @endif>I</option>
+                                                <option value="Alpha" class="centerx" @if ($absens->keterangan ==
+                                                    "Alpha")
+                                                    selected
+                                                    @endif>A</option>
+                                            </select>
+                                            <div class="input-group-addon">
+                                                <a href="javascript:void(0)" class="btn btn-danger remove"><span
+                                                        class="glyphicon glyphicon glyphicon-remove"
+                                                        aria-hidden="true"></span>
+                                                    <i class="fas fa-trash"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+
                                 <div class="form-group col-sm-12" style="align-items: flex-end">
                                     <div class="input-group btn-form">
                                         <button type="submit" class="btn btn-success btn-submit mr-3">

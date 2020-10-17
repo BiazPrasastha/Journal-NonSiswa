@@ -407,37 +407,53 @@ class JurnalController extends Controller
     {
         $dt =Carbon::now();
         $dt = $dt->toDateString();
-
-        if($id->valid == 1){
-            alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
-            return redirect('/jurnal');
-        }
-        else {
+        $absen = DB::table('jurnal_siswa')
+                ->where('jurnal_id','=',$id->id)
+                ->get();
+        $siswa = Siswa::where('kelas_id','=',$id->kelas_id)->get();
+        // if($id->valid == 1){
+        //     alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
+        //     return redirect('/jurnal');
+        // }
+        // else {
+        // }
             if ($dt == $id->tanggal) {
                 $mpl = Mapel::orderBy('mapel','asc')->get();
                 $gr = Guru::all();
                 $kls = Kelas::all();
-                return view('Jurnal.edit',compact('id','mpl','gr','kls'));
+                return view('Jurnal.edit',compact('id','mpl','gr','kls','absen','siswa'));
             }
             else{
                 alert()->error('','Batas Edit Kadaluarsa')->background('#3B4252')->autoClose(2000);
                 return redirect()->back();
             }
-        }
     }
 
     public function editp(Request $req,Jurnal $id)
     {
-        if($id->valid == 1 ){
-            alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
-            return redirect('/jurnal');
+        // if($id->valid == 1 ){
+        //     alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
+        //     return redirect('/jurnal');
+        // }
+        // else {
+        // }
+        $absen = collect($req->absen);
+        $keterangan = collect($req->abs);
+        $absen_array = $absen->toArray();
+        if(count(array_unique($absen_array))<count($absen_array))
+        {
+            alert()->error('','Absen Duplikat')->background('#3B4252')->autoClose(2000);
+            return redirect()->back();
         }
-        else {
-            $id->fill($req->all());
-            $id->mapel_id = $req->mapel_id;
-            $id->save();
-            return redirect('/jurnal');
+        else
+        {
+            alert()->success('','Absen Berhasil')->background('#3B4252')->autoClose(2000);
+            return redirect()->back();
         }
+        $id->fill($req->all());
+        $id->mapel_id = $req->mapel_id;
+        $id->save();
+        return redirect('/jurnal');
     }
 
     public function info(Jurnal $id)
@@ -450,11 +466,12 @@ class JurnalController extends Controller
         $dt =Carbon::now();
         $dt = $dt->toDateString();
 
-        if ($id->valid == 1) {
-            alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
-            return redirect('/jurnal');
-        }
-        else {
+        // if ($id->valid == 1) {
+        //     alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
+        //     return redirect('/jurnal');
+        // }
+        // else {
+        // }
             if ($dt == $id->tanggal) {
                 DB::table('jurnal_siswa')
                     ->where('jurnal_id','=',$id->id)
@@ -466,7 +483,6 @@ class JurnalController extends Controller
                 alert()->error('','Batas Hapus Kadaluarsa')->background('#3B4252')->autoClose(2000);
                 return redirect()->back();
             }
-        }
     }
 
     public function bulanan(Request $req,Jurnal $jurnal)
