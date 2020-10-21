@@ -18,6 +18,7 @@ class isKetua
         if (Auth::user()->role == "1") {
             return $next($request);
         } else {
+            alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
             return redirect()->back();
         }
     }

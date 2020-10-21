@@ -53,7 +53,13 @@ Route::group(['middleware' => ['isLogin']], function () {
     Route::prefix('jurnal')->group(function(){
         Route::get('/{id}/edit', 'JurnalController@edit');
         Route::post('/{id}/edit-post', 'JurnalController@editp');
-        Route::post('/create-post', 'JurnalController@createp');
+        Route::group(['middleware' => ['isExist']], function () {
+            Route::post('/create-post', 'JurnalController@createp');
+            Route::group(['middleware' => ['isGuru']], function () {
+                Route::post('/create-2', 'JurnalController@create2');
+                Route::get('/create', 'JurnalController@create');
+            });
+        });
         Route::group(['middleware' => ['isKetua']], function () {
             Route::get('/{id}/accept', 'JurnalController@acc');
         });

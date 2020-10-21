@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'isAdmin' => \App\Http\Middleware\isAdmin::class,
         'isKetua' => \App\Http\Middleware\isKetua::class,
         'isGuru' => \App\Http\Middleware\isGuru::class,
+        'isExist' => \App\Http\Middleware\isExist::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

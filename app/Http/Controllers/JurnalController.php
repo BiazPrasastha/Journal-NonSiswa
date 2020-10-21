@@ -176,6 +176,7 @@ class JurnalController extends Controller
 
         //ketua
         if (Auth::user()->role == 1){
+            $tombol = DB::table('jurnal')->where('kelas_id','=',$kelas)->where('tanggal', '=', $dt->toDateString())->where('jam','=',$this->jamke)->first();
             if ($req->has('date') ) {
                 $jurnal_valid = Jurnal::with('mapel')
                     ->with('guru')
@@ -212,6 +213,9 @@ class JurnalController extends Controller
                     ->where('valid','=',0)
                     ->get();
                 $dx =$dt->toDateString();
+            }
+            if($tombol !== null){
+                $tombol =  "disable";
             }
         }
         //admin
@@ -276,14 +280,13 @@ class JurnalController extends Controller
                     ->where('guru_id', '=', $guru)
                     ->get();
                 $dx =$dt->toDateString();
-                if($tombol !== null){
-                    $tombol =  "disable";
-                }
-
+            }
+            if($tombol !== null){
+                $tombol =  "disable";
             }
         }
         if (Auth::user()->role == 1) {
-            return view('Jurnal.index[ketua]', compact('mpl','gr','jam','siswa','dx','cls','today','jurnal_valid','jurnal_invalid'));
+            return view('Jurnal.index[ketua]', compact('mpl','gr','jam','siswa','dx','cls','today','jurnal_valid','jurnal_invalid','tombol'));
         }
         elseif (Auth::user()->role == 2) {
             return view('Jurnal.index[admin]', compact('jurnal','mpl','gr','jam','siswa','dx','cls','today','month'));
@@ -293,7 +296,58 @@ class JurnalController extends Controller
         }
     }
 
-    public function createp(Request $req)
+    public function create()
+    {
+        return view('Jurnal.add-page-1');
+    }
+
+    public function create2(Request $req)
+    {
+        $kelas = $req->kelas.' '.$req->jurusan;
+        $kelas = Kelas::where('kelas','LIKE',$kelas.'%')->get();
+
+        $RPL    = ['SEMUA', 'TI', 'RPL', 'JEPANG'];
+        $TKJ    = ['SEMUA', 'TI', 'RPL'];
+        $MM     = ['SEMUA', 'TI', 'MM'];
+        $AKL    = ['SEMUA', 'BISMEN', 'AKL', 'JEPANG', 'IPA'];
+        $OTP    = ['SEMUA', 'BISMEN', 'OTP', 'IPA'];
+        $BDP    = ['SEMUA', 'BISMEN', 'BDP', 'IPA'];
+        $UPW    = ['SEMUA', 'PARIWISATA', 'UPW', 'JEPANG', 'IPA'];
+        $TBO    = ['SEMUA', 'PARIWISATA', 'TBO', 'IPA'];
+        if($req->jurusan == "RPL"){
+            $mapel = Mapel::whereIn('kompetensi',$RPL)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "TKJ") {
+            $mapel = Mapel::whereIn('kompetensi',$TKJ)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "MM") {
+            $mapel = Mapel::whereIn('kompetensi',$MM)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "AKL") {
+            $mapel = Mapel::whereIn('kompetensi',$AKL)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "OTP") {
+            $mapel = Mapel::whereIn('kompetensi',$OTP)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "BDP") {
+            $mapel = Mapel::whereIn('kompetensi',$BDP)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "UPW") {
+            $mapel = Mapel::whereIn('kompetensi',$UPW)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "TBO") {
+            $mapel = Mapel::whereIn('kompetensi',$TBO)->get()->sortBy('mapel');
+        }
+        if($kelas->first() == null){
+            alert()->error('','Kelas '.$req->kelas.' '.$req->jurusan .' Tidak Ditemukan')->background('#3B4252')->autoClose(2000);
+            return redirect()->back();
+        }
+        else{
+            return view('Jurnal.add-page-2',compact('kelas','mapel'));
+        }
+    }
+
+        public function createp(Request $req)
     {
         $dt =Carbon::now();
         $kelas = Auth::user()->kelas_id;
@@ -304,22 +358,16 @@ class JurnalController extends Controller
             $jurnal->kelas_id = $kls->id;
         }
         elseif (Auth::user()->role == 3) {
-            $x = $req->kelas.' '.$req->jurusan.$req->urut;
-            $all = Kelas::where('kelas', '=', $x)->get();
-            if ($all->count() == 0) {
-                alert()->error('','Kelas '.$x .' Tidak Valid')->background('#3B4252')->autoClose(2000);
-                return redirect()->back();
-            }
-            else {
-                $jurnal->kelas_id = $all[0]->id;
-            }
+            $jurnal->kelas_id = $req->kelas;
         }
         else{
             return redirect()->back();
         }
+
         $jurnal->tanggal = $dt->toDateString();
         $jurnal->jam = $this->jamke;
         $jurnal->mapel_id = $req->mapel;
+
         if (Auth::user()->role == 1) {
             $jurnal->guru_id = $req->guru;
         }

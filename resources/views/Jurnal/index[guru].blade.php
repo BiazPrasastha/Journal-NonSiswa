@@ -14,21 +14,23 @@ Data Siswa
                     <i class="fas fa-filter"></i>
                 </button>
                 @if ($jam == "home")
-                <button type="button" class="btn danger" data-toggle="modal">
+                <button type="button" class="btn danger">
                     <i class="fas fa-minus"></i>
                 </button>
                 @elseif($jam == "break")
-                <button type="button" class="btn danger" data-toggle="modal">
+                <button type="button" class="btn danger">
                     <i class="fas fa-minus"></i>
                 </button>
                 @elseif($tombol == "disable")
-                <button type="button" class="btn danger" data-toggle="modal">
+                <button type="button" class="btn danger">
                     <i class="fas fa-minus"></i>
                 </button>
                 @else
-                <button type="button" class="btn tambah" data-toggle="modal" data-target="#modalscrollable">
-                    <i class="fas fa-plus"></i>
-                </button>
+                <a href="/jurnal/create">
+                    <button type="button" class="btn tambah">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </a>
                 @endif
             </div>
         </form>

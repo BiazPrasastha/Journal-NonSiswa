@@ -18,16 +18,14 @@ Data Guru | Journal
         <div class="col-lg-12">
             <div class="card mx-auto">
                 <div class="card-body">
-                    <form class="needs-validation" action="" method="post" novalidate>
+                    <form class="needs-validation" action="/jurnal/create-post" method="post" novalidate>
                         @csrf
                         <div class="form-group col-sm-12">
-                            <select class="form-control m-input" name="urut" required>
-                                <option value="">Indeks</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                            <select class="form-control m-input" name="kelas" required>
+                                <option value="">Kelas</option>
+                                @foreach ($kelas as $cls)
+                                <option value="{{$cls->id}}">{{$cls->kelas}}</option>
+                                @endforeach
                             </select>
                             <div class="invalid-feedback">Kelas Harus Diisi !</div>
                         </div>
@@ -35,9 +33,9 @@ Data Guru | Journal
                         <div class="form-group col-sm-12">
                             <select class="form-control m-input" name="mapel" required>
                                 <option value="">Mata Pelajaran</option>
-                                {{-- @foreach ($mpl as $mapels)
+                                @foreach ($mapel as $mapels)
                                 <option value="{{$mapels->id}}">{{$mapels->mapel}}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
                             <div class="invalid-feedback">Mapel Harus Diisi !</div>
                         </div>

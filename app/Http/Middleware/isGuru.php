@@ -19,6 +19,7 @@ class isGuru
         if (Auth::user()->role == "3") {
             return $next($request);
         } else {
+            alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
             return redirect('/jurnal');
         }
 

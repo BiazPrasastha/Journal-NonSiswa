@@ -15,11 +15,15 @@ Data Siswa | Journal
                     <i class="fas fa-filter"></i>
                 </button>
                 @if ($jam == "home")
-                <button type="button" class="btn danger" data-toggle="modal">
+                <button type="button" class="btn danger">
                     <i class="fas fa-minus"></i>
                 </button>
                 @elseif($jam == "break")
-                <button type="button" class="btn danger" data-toggle="modal">
+                <button type="button" class="btn danger">
+                    <i class="fas fa-minus"></i>
+                </button>
+                @elseif($tombol == "disable")
+                <button type="button" class="btn danger">
                     <i class="fas fa-minus"></i>
                 </button>
                 @else

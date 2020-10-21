@@ -18,7 +18,7 @@ Data Guru | Journal
         <div class="col-lg-12">
             <div class="card mx-auto">
                 <div class="card-body">
-                    <form class="needs-validation" action="" method="post" novalidate>
+                    <form class="needs-validation" action="/jurnal/create-2" method="POST" novalidate>
                         @csrf
                         <div class="form-group col-sm-12">
                             <select class="form-control m-input" name="kelas" required>
@@ -46,7 +46,7 @@ Data Guru | Journal
                         </div>
 
                         <div class="form-group col-lg-12">
-                            <button type="submit" name="submit" class="btn btn-success btn-block">
+                            <button type="submit" class="btn btn-success btn-block">
                                 Selanjutnya
                             </button>
                         </div>
