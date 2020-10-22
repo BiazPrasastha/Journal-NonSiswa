@@ -1,7 +1,7 @@
 @extends('Template.template')
 
 @section('title')
-Data Siswa | Journal
+Edit Data Siswa | Journal
 @endsection
 
 @section('content')

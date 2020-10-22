@@ -1,6 +1,6 @@
 @extends('Template.template')
 @section('title')
-Data Siswa
+Jurnal Harian | Journal
 @endsection
 @section('content')
 <div class="container">
@@ -72,26 +72,6 @@ Data Siswa
                                                 </div>
                                             </a>
                                         </button>
-                                        <button class="btn btn-delete mr-1" type="button" style="flex: 1;">
-                                            <a href="/jurnal/{{$jurnals->id}}/delete">
-                                                <span class="material-icons">delete</span>
-                                                <div class="link-action">
-                                                    <h6>
-                                                        Delete
-                                                    </h6>
-                                                </div>
-                                            </a>
-                                        </button>
-                                        <button class="btn btn-acc mr-1" type="button" style="flex: 1;">
-                                            <a href="/jurnal/{{$jurnals->id}}/add-absen">
-                                                <span class="material-icons">person</span>
-                                                <div class="link-action">
-                                                    <h6>
-                                                        Absen
-                                                    </h6>
-                                                </div>
-                                            </a>
-                                        </button>
                                         <button class="btn btn-edit mr-1" type="button" style="flex: 1;">
                                             <a href="/jurnal/{{$jurnals->id}}/edit">
                                                 <span class="material-icons">edit</span>
@@ -102,12 +82,22 @@ Data Siswa
                                                 </div>
                                             </a>
                                         </button>
+                                        <button class="btn btn-delete mr-1" type="button" style="flex: 1;">
+                                            <a href="/jurnal/{{$jurnals->id}}/delete">
+                                                <span class="material-icons">delete</span>
+                                                <div class="link-action">
+                                                    <h6>
+                                                        Delete
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <a class="item-swipe swipe itemMobile" href="/jurnal/{{$jurnals->id}}/info">
+                    <a class="item-swipe swipe-two itemMobile" href="/jurnal/{{$jurnals->id}}/info">
                         <div class="jamke">
                             {{str_pad($jurnals->jam, 2, "0", STR_PAD_LEFT)}} - {{$jurnals->kelas->kelas}}
                         </div>
@@ -119,12 +109,7 @@ Data Siswa
                                 <span class="material-icons">delete</span>
                             </a>
                         </button>
-                        <button class="action second btn-acc" type="button">
-                            <a href="/jurnal/{{$jurnals->id}}/add-absen">
-                                <span class="material-icons">person</span>
-                            </a>
-                        </button>
-                        <button class="action third btn-edit" type="button">
+                        <button class="action second btn-edit" type="button">
                             <a href="/jurnal/{{$jurnals->id}}/edit">
                                 <span class="material-icons">edit</span>
                             </a>
@@ -167,26 +152,6 @@ Data Siswa
                                                 </div>
                                             </a>
                                         </button>
-                                        <button class="btn btn-delete mr-1" type="button" style="flex: 1;">
-                                            <a href="/jurnal/{{$jurnals->id}}/delete">
-                                                <span class="material-icons">delete</span>
-                                                <div class="link-action">
-                                                    <h6>
-                                                        Delete
-                                                    </h6>
-                                                </div>
-                                            </a>
-                                        </button>
-                                        <button class="btn btn-acc mr-1" type="button" style="flex: 1;">
-                                            <a href="/jurnal/{{$jurnals->id}}/add-absen">
-                                                <span class="material-icons">person</span>
-                                                <div class="link-action">
-                                                    <h6>
-                                                        Absen
-                                                    </h6>
-                                                </div>
-                                            </a>
-                                        </button>
                                         <button class="btn btn-edit mr-1" type="button" style="flex: 1;">
                                             <a href="/jurnal/{{$jurnals->id}}/edit">
                                                 <span class="material-icons">edit</span>
@@ -197,12 +162,22 @@ Data Siswa
                                                 </div>
                                             </a>
                                         </button>
+                                        <button class="btn btn-delete mr-1" type="button" style="flex: 1;">
+                                            <a href="/jurnal/{{$jurnals->id}}/delete">
+                                                <span class="material-icons">delete</span>
+                                                <div class="link-action">
+                                                    <h6>
+                                                        Delete
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <a class="item-swipe swipe itemMobile" href="/jurnal/{{$jurnals->id}}/info">
+                    <a class="item-swipe swipe-two itemMobile" href="/jurnal/{{$jurnals->id}}/info">
                         <div class="jamke">
                             {{str_pad($jurnals->jam, 2, "0", STR_PAD_LEFT)}} - {{$jurnals->kelas->kelas}}
                         </div>
@@ -214,12 +189,7 @@ Data Siswa
                                 <span class="material-icons">delete</span>
                             </a>
                         </button>
-                        <button class="action second btn-acc" type="button">
-                            <a href="/jurnal/{{$jurnals->id}}/add-absen">
-                                <span class="material-icons">person</span>
-                            </a>
-                        </button>
-                        <button class="action third btn-edit" type="button">
+                        <button class="action second btn-edit" type="button">
                             <a href="/jurnal/{{$jurnals->id}}/edit">
                                 <span class="material-icons">edit</span>
                             </a>

@@ -1,7 +1,7 @@
 @extends('Template.template')
 
 @section('title')
-Data Siswa | Journal
+Profile | Journal
 @endsection
 @section('content')
 <div class="container-fluid">

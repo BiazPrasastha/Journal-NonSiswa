@@ -298,7 +298,7 @@ class JurnalController extends Controller
 
     public function create()
     {
-        return view('Jurnal.add-page-1');
+        return view('Jurnal.create-page-1');
     }
 
     public function create2(Request $req)
@@ -343,11 +343,11 @@ class JurnalController extends Controller
             return redirect()->back();
         }
         else{
-            return view('Jurnal.add-page-2',compact('kelas','mapel'));
+            return view('Jurnal.create-page-2',compact('kelas','mapel'));
         }
     }
 
-        public function createp(Request $req)
+    public function createp(Request $req)
     {
         $dt =Carbon::now();
         $kelas = Auth::user()->kelas_id;
@@ -394,13 +394,13 @@ class JurnalController extends Controller
             ->where('mapel_id', '=', $req->mapel)
             ->first();
         }
-        if ($valid == null) {
+        if (Auth::user()->role == 1) {
             $jurnal->save();
             return redirect('/jurnal');
         }
-        else{
-            alert()->error('','Jurnal Sudah Ada')->background('#3B4252')->autoClose(2000);
-            return redirect()->back();
+        elseif(Auth::user()->role == 3){
+            $jurnal->save();
+            return redirect('jurnal/'. $jurnal->id .'/add-absen');
         }
     }
 
@@ -428,8 +428,8 @@ class JurnalController extends Controller
         $jumlah = $absen->count();
 
         if($keterangan->contains('#')){
-            alert()->error('','Lengkapi Keterangan Absensi')->background('#3B4252')->autoClose(2000);
-            return redirect()->back();
+            alert()->success('','Jurnal Berhasil Ditambahkan')->background('#3B4252')->autoClose(2000);
+            return redirect('/jurnal');
         }
         else{
             $valid = DB::table('jurnal_siswa')
@@ -459,10 +459,8 @@ class JurnalController extends Controller
     {
         $dt =Carbon::now();
         $dt = $dt->toDateString();
-        $absen = DB::table('jurnal_siswa')
-                ->where('jurnal_id','=',$id->id)
-                ->get();
-        $siswa = Siswa::where('kelas_id','=',$id->kelas_id)->get();
+        $jurusan = $id->Kelas->jurusan;
+        $tingkat = $id->Kelas->tingkat;
         // if($id->valid == 1){
         //     alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
         //     return redirect('/jurnal');
@@ -470,10 +468,7 @@ class JurnalController extends Controller
         // else {
         // }
             if ($dt == $id->tanggal) {
-                $mpl = Mapel::orderBy('mapel','asc')->get();
-                $gr = Guru::all();
-                $kls = Kelas::all();
-                return view('Jurnal.edit',compact('id','mpl','gr','kls','absen','siswa'));
+                return view('Jurnal.edit-page-1',compact('id','tingkat','jurusan'));
             }
             else{
                 alert()->error('','Batas Edit Kadaluarsa')->background('#3B4252')->autoClose(2000);
@@ -481,37 +476,88 @@ class JurnalController extends Controller
             }
     }
 
-    public function editp(Request $req,Jurnal $id)
+    public function edit2(Jurnal $id,Request $req)
     {
-        // if($id->valid == 1 ){
-        //     alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
-        //     return redirect('/jurnal');
-        // }
-        // else {
-        // }
-        $absen = collect($req->absen);
-        $keterangan = collect($req->abs);
-        $jumlah = $absen->count();
-        $absen_array = $absen->toArray();
-        if(count(array_unique($absen_array))<count($absen_array))
-        {
-            alert()->error('','Absen Duplikat')->background('#3B4252')->autoClose(2000);
+        $kelas = $req->kelas.' '.$req->jurusan;
+        $kelas = Kelas::where('kelas','LIKE',$kelas.'%')->get();
+
+        $RPL    = ['SEMUA', 'TI', 'RPL', 'JEPANG'];
+        $TKJ    = ['SEMUA', 'TI', 'RPL'];
+        $MM     = ['SEMUA', 'TI', 'MM'];
+        $AKL    = ['SEMUA', 'BISMEN', 'AKL', 'JEPANG', 'IPA'];
+        $OTP    = ['SEMUA', 'BISMEN', 'OTP', 'IPA'];
+        $BDP    = ['SEMUA', 'BISMEN', 'BDP', 'IPA'];
+        $UPW    = ['SEMUA', 'PARIWISATA', 'UPW', 'JEPANG', 'IPA'];
+        $TBO    = ['SEMUA', 'PARIWISATA', 'TBO', 'IPA'];
+        if($req->jurusan == "RPL"){
+            $mapel = Mapel::whereIn('kompetensi',$RPL)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "TKJ") {
+            $mapel = Mapel::whereIn('kompetensi',$TKJ)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "MM") {
+            $mapel = Mapel::whereIn('kompetensi',$MM)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "AKL") {
+            $mapel = Mapel::whereIn('kompetensi',$AKL)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "OTP") {
+            $mapel = Mapel::whereIn('kompetensi',$OTP)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "BDP") {
+            $mapel = Mapel::whereIn('kompetensi',$BDP)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "UPW") {
+            $mapel = Mapel::whereIn('kompetensi',$UPW)->get()->sortBy('mapel');
+        }
+        elseif ($req->jurusan == "TBO") {
+            $mapel = Mapel::whereIn('kompetensi',$TBO)->get()->sortBy('mapel');
+        }
+        if($kelas->first() == null){
+            alert()->error('','Kelas '.$req->kelas.' '.$req->jurusan .' Tidak Ditemukan')->background('#3B4252')->autoClose(2000);
             return redirect()->back();
         }
-        else
-        {
-            DB::table('jurnal_siswa')
+
+        $absen = DB::table('jurnal_siswa')
                 ->where('jurnal_id','=',$id->id)
-                ->delete();
-            for ($i=0; $i <$jumlah ; $i++) {
-                DB::insert('insert into jurnal_siswa (jurnal_id, siswa_id,keterangan) values (?, ?, ?)', [$id->id,$absen[$i], $keterangan[$i]]);
-            }
-            $id->fill($req->all());
-            $id->mapel_id = $req->mapel_id;
-            $id->save();
-            alert()->success('','Absen Siswa Berhasil Diupdate')->background('#3B4252')->autoClose(2000);
-            return redirect('/jurnal');
+                ->get();
+        $siswa = Siswa::where('kelas_id','=',$id->kelas_id)->get();
+        // $mpl = Mapel::orderBy('mapel','asc')->get();
+        $gr = Guru::all();
+        $kls = $id->kelas_id;
+        return view('Jurnal.edit-page-2',compact('id','gr','kls','absen','siswa','kelas','mapel'));
+    }
+
+    public function editp(Request $req,Jurnal $id)
+    {
+        // $absen = collect($req->absen);
+        // $keterangan = collect($req->abs);
+        // $jumlah = $absen->count();
+        // $absen_array = $absen->toArray();
+        // if(count(array_unique($absen_array))<count($absen_array))
+        // {
+        //     alert()->error('','Absen Duplikat')->background('#3B4252')->autoClose(2000);
+        //     return redirect()->back();
+        // }
+        // else
+        // {
+        //     DB::table('jurnal_siswa')
+        //         ->where('jurnal_id','=',$id->id)
+        //         ->delete();
+        //     for ($i=0; $i <$jumlah ; $i++) {
+        //         DB::insert('insert into jurnal_siswa (jurnal_id, siswa_id,keterangan) values (?, ?, ?)', [$id->id,$absen[$i], $keterangan[$i]]);
+        //     }
+        // }
+        $kelas_awal = strval($id->kelas_id);
+        if($kelas_awal !== $req->kelas_id){
+            DB::table('jurnal_siswa')->where('jurnal_id','=',$id->id)->delete();
         }
+        $id->kelas_id = $req->kelas_id;
+        $id->mapel_id = $req->mapel_id;
+        $id->materi  = $req->materi;
+        $id->keterangan = $req->keterangan;
+        $id->save();
+        return redirect('jurnal/'. $id->id .'/edit-absen');
     }
 
     public function info(Jurnal $id)

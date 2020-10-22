@@ -51,7 +51,7 @@ Route::group(['middleware' => ['isLogin']], function () {
     });
 
     Route::prefix('jurnal')->group(function(){
-        Route::get('/{id}/edit', 'JurnalController@edit');
+        // Route::get('/{id}/edit', 'JurnalController@edit');
         Route::post('/{id}/edit-post', 'JurnalController@editp');
         Route::group(['middleware' => ['isExist']], function () {
             Route::post('/create-post', 'JurnalController@createp');
@@ -65,6 +65,8 @@ Route::group(['middleware' => ['isLogin']], function () {
         });
         Route::group(['middleware' => ['isGuru']], function () {
             Route::get('/{id}/add-absen', 'JurnalController@add');
+            Route::get('/{id}/edit', 'JurnalController@edit');
+            Route::post('/{id}/edit-2', 'JurnalController@edit2');
             Route::post('/{id}/add-absen-post', 'JurnalController@addp');
             Route::get('/{id}/delete', 'JurnalController@delete');
         });
@@ -85,15 +87,4 @@ Route::group(['middleware' => ['isLogin']], function () {
             Route::post('/set-jam', 'ProfileController@setjam');
         });
     });
-});
-
-
-Route::get('coba-1', function()
-{
-    return view('Jurnal.add-page-1');
-});
-
-Route::get('coba-2', function()
-{
-    return view('Jurnal.add-page-2');
 });

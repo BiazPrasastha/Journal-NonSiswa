@@ -1,7 +1,7 @@
 @extends('Template.template')
 
 @section('title')
-Data Guru | Journal
+Edit Data Guru | Journal
 @endsection
 
 @section('content')

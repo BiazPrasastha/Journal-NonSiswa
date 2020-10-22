@@ -1,7 +1,7 @@
 @extends('Template.template')
 
 @section('title')
-Data Siswa | Journal
+Jurnal Harian | Journal
 @endsection
 @section('content')
 <div class="container">

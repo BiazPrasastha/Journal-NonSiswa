@@ -1,7 +1,7 @@
 @extends('Template.template')
 
 @section('title')
-Tambah Absensi | Journal
+Edit Absensi | Journal
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@ Tambah Absensi | Journal
 <div class="container-fluid">
     <!-- Header -->
     <div class="header" style="border-bottom: none;">
-        <h3>Tambah Absen</h3>
+        <h3>Edit Absen</h3>
         <h6>{{$id->mapel->mapel}}</h6>
         <h6>Jamke - {{$id->jam}}</h6>
     </div>
