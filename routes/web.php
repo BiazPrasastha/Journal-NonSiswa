@@ -65,9 +65,11 @@ Route::group(['middleware' => ['isLogin']], function () {
         });
         Route::group(['middleware' => ['isGuru']], function () {
             Route::get('/{id}/add-absen', 'JurnalController@add');
+            Route::post('/{id}/add-absen-post', 'JurnalController@addp');
+            Route::get('/{id}/edit-absen', 'JurnalController@absen_edit');
+            Route::post('/{id}/edit-absen-post', 'JurnalController@absen_editp');
             Route::get('/{id}/edit', 'JurnalController@edit');
             Route::post('/{id}/edit-2', 'JurnalController@edit2');
-            Route::post('/{id}/add-absen-post', 'JurnalController@addp');
             Route::get('/{id}/delete', 'JurnalController@delete');
         });
         Route::get('/', 'JurnalController@index');

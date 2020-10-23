@@ -426,30 +426,37 @@ class JurnalController extends Controller
         $absen = collect($req->absen);
         $keterangan = collect($req->abs);
         $jumlah = $absen->count();
-
-        if($keterangan->contains('#')){
-            alert()->success('','Jurnal Berhasil Ditambahkan')->background('#3B4252')->autoClose(2000);
-            return redirect('/jurnal');
+        $absen_array = $absen->toArray();
+        if(count(array_unique($absen_array))<count($absen_array))
+        {
+            alert()->error('','Absen Duplikat')->background('#3B4252')->autoClose(2000);
+            return redirect()->back();
         }
         else{
-            $valid = DB::table('jurnal_siswa')
+            if($keterangan->contains('#')){
+                alert()->success('','Jurnal Berhasil Ditambahkan')->background('#3B4252')->autoClose(2000);
+                return redirect('/jurnal');
+            }
+            else{
+                $valid = DB::table('jurnal_siswa')
                 ->where('jurnal_id', $id->id)
                 ->where('siswa_id', $req->absen)
                 ->get();
-            $valid = $valid->toArray();
-            if ($valid == null) {
-                for ($i=0; $i <$jumlah ; $i++) {
-                    DB::insert('insert into jurnal_siswa (jurnal_id, siswa_id,keterangan) values (?, ?, ?)', [$id->id,$absen[$i], $keterangan[$i]]);
+                $valid = $valid->toArray();
+                if ($valid == null) {
+                    for ($i=0; $i <$jumlah ; $i++) {
+                        DB::insert('insert into jurnal_siswa (jurnal_id, siswa_id,keterangan) values (?, ?, ?)', [$id->id,$absen[$i], $keterangan[$i]]);
+                    }
+                    alert()->success('','Jurnal Berhasil Ditambahkan')->background('#3B4252')->autoClose(2000);
+                    return redirect('/jurnal');
                 }
-                alert()->success('','Absen Siswa Berhasil Ditambahkan')->background('#3B4252')->autoClose(2000);
-                return redirect('/jurnal');
-            }
-            else {
-                for ($i=0; $i <$jumlah ; $i++) {
-                    $query = DB::update('update jurnal_siswa set keterangan = ? where jurnal_id = ? AND siswa_id = ?', [$keterangan[$i],$id->id,$absen[$i]]);
+                else {
+                    for ($i=0; $i <$jumlah ; $i++) {
+                        $query = DB::update('update jurnal_siswa set keterangan = ? where jurnal_id = ? AND siswa_id = ?', [$keterangan[$i],$id->id,$absen[$i]]);
+                    }
+                    alert()->success('','Absen Siswa Berhasil Diupdate')->background('#3B4252')->autoClose(2000);
+                    return redirect('/jurnal');
                 }
-                alert()->success('','Absen Siswa Berhasil Diupdate')->background('#3B4252')->autoClose(2000);
-                return redirect('/jurnal');
             }
         }
 
@@ -558,6 +565,49 @@ class JurnalController extends Controller
         $id->keterangan = $req->keterangan;
         $id->save();
         return redirect('jurnal/'. $id->id .'/edit-absen');
+    }
+
+    public function absen_edit(Jurnal $id)
+    {
+        $dt =Carbon::now();
+        $dt = $dt->toDateString();
+        $absen = DB::table('jurnal_siswa')
+                ->where('jurnal_id','=',$id->id)
+                ->get();
+        $siswa = Siswa::where('kelas_id','=',$id->kelas_id)->get();
+        if ($dt == $id->tanggal) {
+            $mpl = Mapel::orderBy('mapel','asc')->get();
+            $gr = Guru::all();
+            $kls = Kelas::all();
+            return view('Jurnal.add-edit',compact('id','mpl','gr','kls','absen','siswa'));
+        }
+        else{
+            alert()->error('','Batas Edit Kadaluarsa')->background('#3B4252')->autoClose(2000);
+            return redirect()->back();
+        }
+    }
+
+    public function absen_editp(request $req,Jurnal $id)
+    {
+        // dd($req->all());
+        $jurnal = Jurnal::find($id->id);
+        $absen = collect($req->absen);
+        $keterangan = collect($req->abs);
+        $jumlah = $absen->count();
+        $absen_array = $absen->toArray();
+        if(count(array_unique($absen_array))<count($absen_array))
+        {
+            alert()->error('','Absen Duplikat')->background('#3B4252')->autoClose(2000);
+            return redirect()->back();
+        }
+        else{
+            DB::table('jurnal_siswa')->where('jurnal_id','=',$id->id)->delete();
+            for ($i=0; $i <$jumlah ; $i++) {
+                DB::insert('insert into jurnal_siswa (jurnal_id, siswa_id,keterangan) values (?, ?, ?)', [$id->id,$absen[$i], $keterangan[$i]]);
+            }
+            alert()->success('','Jurnal Berhasil Diedit')->background('#3B4252')->autoClose(2000);
+            return redirect('/jurnal');
+        }
     }
 
     public function info(Jurnal $id)

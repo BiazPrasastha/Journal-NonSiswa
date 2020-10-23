@@ -47,7 +47,7 @@ Tambah Absensi | Journal
                         <div class="form-group col-sm-12">
                             <div class="input-group btn-form">
                                 <button type="submit" class="btn btn-success btn-submit btn-block">
-                                    <i class="fas fa-plus"></i>Tambah Absen
+                                    <i class="fas fa-plus"></i>Tambah Jurnal
                                 </button>
                             </div>
                         </div>
