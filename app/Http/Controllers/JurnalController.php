@@ -304,40 +304,13 @@ class JurnalController extends Controller
     public function create2(Request $req)
     {
         $kelas = $req->kelas.' '.$req->jurusan;
+        $mpl = DB::table('kelas_mapel')->where('kelas','=',$kelas)->pluck('mapel_id');
+        $mpl = $mpl->toArray();
+        $mapel = Mapel::whereIn('id',$mpl)->get()->sortBy('mapel');
+
         $kelas = Kelas::where('kelas','LIKE',$kelas.'%')->get();
 
-        $RPL    = ['SEMUA', 'TI', 'RPL', 'JEPANG'];
-        $TKJ    = ['SEMUA', 'TI', 'RPL'];
-        $MM     = ['SEMUA', 'TI', 'MM'];
-        $AKL    = ['SEMUA', 'BISMEN', 'AKL', 'JEPANG', 'IPA'];
-        $OTP    = ['SEMUA', 'BISMEN', 'OTP', 'IPA'];
-        $BDP    = ['SEMUA', 'BISMEN', 'BDP', 'IPA'];
-        $UPW    = ['SEMUA', 'PARIWISATA', 'UPW', 'JEPANG', 'IPA'];
-        $TBO    = ['SEMUA', 'PARIWISATA', 'TBO', 'IPA'];
-        if($req->jurusan == "RPL"){
-            $mapel = Mapel::whereIn('kompetensi',$RPL)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "TKJ") {
-            $mapel = Mapel::whereIn('kompetensi',$TKJ)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "MM") {
-            $mapel = Mapel::whereIn('kompetensi',$MM)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "AKL") {
-            $mapel = Mapel::whereIn('kompetensi',$AKL)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "OTP") {
-            $mapel = Mapel::whereIn('kompetensi',$OTP)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "BDP") {
-            $mapel = Mapel::whereIn('kompetensi',$BDP)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "UPW") {
-            $mapel = Mapel::whereIn('kompetensi',$UPW)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "TBO") {
-            $mapel = Mapel::whereIn('kompetensi',$TBO)->get()->sortBy('mapel');
-        }
+
         if($kelas->first() == null){
             alert()->error('','Kelas '.$req->kelas.' '.$req->jurusan .' Tidak Ditemukan')->background('#3B4252')->autoClose(2000);
             return redirect()->back();
@@ -486,40 +459,11 @@ class JurnalController extends Controller
     public function edit2(Jurnal $id,Request $req)
     {
         $kelas = $req->kelas.' '.$req->jurusan;
+        $mpl = DB::table('kelas_mapel')->where('kelas','=',$kelas)->pluck('mapel_id');
+        $mpl = $mpl->toArray();
+        $mapel = Mapel::whereIn('id',$mpl)->get()->sortBy('mapel');
         $kelas = Kelas::where('kelas','LIKE',$kelas.'%')->get();
 
-        $RPL    = ['SEMUA', 'TI', 'RPL', 'JEPANG'];
-        $TKJ    = ['SEMUA', 'TI', 'RPL'];
-        $MM     = ['SEMUA', 'TI', 'MM'];
-        $AKL    = ['SEMUA', 'BISMEN', 'AKL', 'JEPANG', 'IPA'];
-        $OTP    = ['SEMUA', 'BISMEN', 'OTP', 'IPA'];
-        $BDP    = ['SEMUA', 'BISMEN', 'BDP', 'IPA'];
-        $UPW    = ['SEMUA', 'PARIWISATA', 'UPW', 'JEPANG', 'IPA'];
-        $TBO    = ['SEMUA', 'PARIWISATA', 'TBO', 'IPA'];
-        if($req->jurusan == "RPL"){
-            $mapel = Mapel::whereIn('kompetensi',$RPL)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "TKJ") {
-            $mapel = Mapel::whereIn('kompetensi',$TKJ)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "MM") {
-            $mapel = Mapel::whereIn('kompetensi',$MM)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "AKL") {
-            $mapel = Mapel::whereIn('kompetensi',$AKL)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "OTP") {
-            $mapel = Mapel::whereIn('kompetensi',$OTP)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "BDP") {
-            $mapel = Mapel::whereIn('kompetensi',$BDP)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "UPW") {
-            $mapel = Mapel::whereIn('kompetensi',$UPW)->get()->sortBy('mapel');
-        }
-        elseif ($req->jurusan == "TBO") {
-            $mapel = Mapel::whereIn('kompetensi',$TBO)->get()->sortBy('mapel');
-        }
         if($kelas->first() == null){
             alert()->error('','Kelas '.$req->kelas.' '.$req->jurusan .' Tidak Ditemukan')->background('#3B4252')->autoClose(2000);
             return redirect()->back();

@@ -175,6 +175,10 @@ class isExist
             alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
             return redirect('/jurnal');
         }
+        elseif ($this->jamke == "home" || $this->jamke=="break") {
+            alert()->error('','Eitss Tidak Bisa')->background('#3B4252')->autoClose(2000);
+            return redirect('/jurnal');
+        }
         else{
             return $next($request);
         }
